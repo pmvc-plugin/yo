@@ -1,0 +1,21 @@
+{
+    "name": "pmvc-plugin/yo",
+    "description": "PMVC php micro framework",
+    "type": "library",
+    "homepage": "https://github.com/pmvc-plugin/yo",
+    "keywords": ["yo", "pmvc", "plug-in"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hill",
+            "email": "hill@kimo.com"
+        }
+    ],
+    "require": {
+        "pmvc/pmvc": "*",
+        "pmvc-plugin/observer": "*",
+        "pmvc-plugin/fast-route": "*",
+        "pmvc-plugin/url": "*"
+    },
+    "minimum-stability": "dev"
+}
