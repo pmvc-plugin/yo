@@ -7,6 +7,6 @@ class YoTest extends PHPUnit_Framework_TestCase
     function testInit()
     {
         $yo= PMVC\plug('yo');
-        $this->assertContains('FastRoute',var_export($yo,true));
+        $this->assertContains('fast_route',var_export($yo,true));
     }
 }

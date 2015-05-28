@@ -14,7 +14,7 @@
     "require": {
         "pmvc/pmvc": "*",
         "pmvc-plugin/observer": "*",
-        "pmvc-plugin/fast-route": "*",
+        "pmvc-plugin/fast_route": "*",
         "pmvc-plugin/url": "*"
     },
     "minimum-stability": "dev"

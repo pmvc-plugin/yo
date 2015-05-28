@@ -12,7 +12,7 @@ class Yo extends \PMVC\PLUGIN
         $controller = new \PMVC\ActionController();
         $this->setDefaultAlias($controller);
         \PMVC\plug('observer')->addObserver($this,'MapRequest');
-        $this->route=\PMVC\plug('fast-route');
+        $this->route=\PMVC\plug('fast_route');
     }
 
     public function onMapRequest()
