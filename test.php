@@ -1,7 +1,6 @@
 <?php
-include_once('vendor/pmvc/pmvc/include.php');
-PMVC\setPlugInFolder('../');
-
+PMVC\Load::mvc();
+PMVC\addPlugInFolder('../');
 class YoTest extends PHPUnit_Framework_TestCase
 {
     function testInit()
