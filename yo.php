@@ -1,9 +1,9 @@
 <?php
 namespace PMVC\PlugIn\Yo;
 
-${_INIT_CONFIG}[_CLASS] = 'PMVC\PlugIn\Yo\Yo';
+${_INIT_CONFIG}[_CLASS] = 'PMVC\PlugIn\Yo\yo';
 
-class Yo extends \PMVC\PLUGIN
+class yo extends \PMVC\PLUGIN
 {
     private $route;
 
@@ -11,20 +11,21 @@ class Yo extends \PMVC\PLUGIN
     {
         $controller = new \PMVC\ActionController();
         $this->setDefaultAlias($controller);
-        \PMVC\plug('observer')->addObserver($this,'MapRequest');
+        \PMVC\plug('dispatcher')->attach($this,'MapRequest');
         $this->route=\PMVC\plug('fast_route');
+        \PMVC\plug('url')->setEnv(array(
+            'REQUEST_URI',
+            'SCRIPT_NAME'
+        ));
+        $this->set('method',$this->getRequest()->getMethod());
     }
 
     public function onMapRequest()
     {
         $request = $this->getRequest();
-        \PMVC\plug('url')->setEnv(array(
-            'REQUEST_URI',
-            'SCRIPT_NAME'
-        ));
         $uri = \PMVC\plug('url')->getPathInfo();
         $dispatch = $this->route->getDispatch(
-            $request->getMethod(),
+            $this->get('method'),
             $uri
         );
         if(is_int($dispatch)){
@@ -39,8 +40,11 @@ class Yo extends \PMVC\PLUGIN
         $this->setMapping($b->getMappings());
     }
 
-    public function get($path,$function)
+    public function get($path=null,$function=null)
     {
+        if(!is_callable($function)){
+            return parent::get($path,$function);
+        }
         $this->route->addRoute('GET',$path,$function);
         return $this;
     }
