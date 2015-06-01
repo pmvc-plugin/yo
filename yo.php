@@ -1,7 +1,7 @@
 <?php
-namespace PMVC\PlugIn\Yo;
+namespace PMVC\PlugIn\yo;
 
-${_INIT_CONFIG}[_CLASS] = 'PMVC\PlugIn\Yo\yo';
+${_INIT_CONFIG}[_CLASS] = 'PMVC\PlugIn\yo\yo';
 
 class yo extends \PMVC\PLUGIN
 {
