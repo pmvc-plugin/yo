@@ -9,7 +9,10 @@ class yo extends \PMVC\PLUGIN
 
     public function init()
     {
-        $controller = new \PMVC\ActionController();
+        $controller = \PMVC\getC(); 
+        if (!$controller) {
+            $controller = new \PMVC\ActionController();
+        }
         $this->setDefaultAlias($controller);
         \PMVC\plug('dispatcher')->attach($this,'MapRequest');
         $this->route=\PMVC\plug('fast_route');
@@ -17,7 +20,7 @@ class yo extends \PMVC\PLUGIN
             'REQUEST_URI',
             'SCRIPT_NAME'
         ));
-        $this->set('method',$this->getRequest()->getMethod());
+        $this['method'] = $this->getRequest()->getMethod();
     }
 
     public function onMapRequest()
@@ -25,26 +28,29 @@ class yo extends \PMVC\PLUGIN
         $request = $this->getRequest();
         $uri = \PMVC\plug('url')->getPathInfo();
         $dispatch = $this->route->getDispatch(
-            $this->get('method'),
+            $this['method'],
             $uri
         );
         if(is_int($dispatch)){
             http_response_code($dispatch);
+            trigger_error('no match router found');
+            \PMVC\call_plugin(
+                'dispatcher',
+                'stop',
+                array(true)
+            );
             return;
         }
-        $request->set($dispatch->var);
+        \PMVC\set($request,$dispatch->var);
         $b = new \PMVC\MappingBuilder();
         $b->addAction('index', array(
             _FUNCTION=>$dispatch->action
         ));
-        $this->setMapping($b->getMappings());
+        $this->addMapping($b->getMappings());
     }
 
     public function get($path=null,$function=null)
     {
-        if(!is_callable($function)){
-            return parent::get($path,$function);
-        }
         $this->route->addRoute('GET',$path,$function);
         return $this;
     }
