@@ -41,7 +41,11 @@ class yo extends \PMVC\PLUGIN
             );
             return;
         }
-        \PMVC\set($request,$dispatch->var);
+        \PMVC\set($request, $dispatch->var);
+        if ('PUT'===$this['method']) {
+            parse_str(file_get_contents("php://input"), $post_vars); 
+            \PMVC\set($request, $post_vars);
+        }
         $b = new \PMVC\MappingBuilder();
         $b->addAction('index', array(
             _FUNCTION=>$dispatch->action
