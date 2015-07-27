@@ -23,6 +23,11 @@ class yo extends \PMVC\PLUGIN
         $this['method'] = $this->getRequest()->getMethod();
     }
 
+    public function getRoutes()
+    {
+        return $this->route->getRoutes();
+    }
+
     public function onMapRequest()
     {
         $request = $this->getRequest();
@@ -42,10 +47,6 @@ class yo extends \PMVC\PLUGIN
             return;
         }
         \PMVC\set($request, $dispatch->var);
-        if ('PUT'===$this['method']) {
-            parse_str(file_get_contents("php://input"), $post_vars); 
-            \PMVC\set($request, $post_vars);
-        }
         $b = new \PMVC\MappingBuilder();
         $b->addAction('index', array(
             _FUNCTION=>$dispatch->action
