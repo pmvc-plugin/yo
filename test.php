@@ -5,8 +5,10 @@ class YoTest extends PHPUnit_Framework_TestCase
 {
     function testInit()
     {
+        $method = 'GET';
+        putenv("REQUEST_METHOD=$method");
         $yo = \PMVC\plug('yo');
-        $this->assertContains('fast_route',var_export($yo,true));
+        $this->assertEquals($method,$yo['method']);
     }
 
     function testGet()
@@ -18,10 +20,11 @@ class YoTest extends PHPUnit_Framework_TestCase
             'SCRIPT_NAME'=>'/yo/'
         ));
         $yo['method']='GET';
-        $yo->get('/hello/{name}',function($m,$f) use ($yo){
+        $adapter = $yo->get('/hello/{name}',function($m,$f) use ($yo){
             $yo['test_name']=$f['name'];
         });
         $yo->process();
         $this->assertEquals($test_name,$yo['test_name']);
+        $this->assertContains('Adapter',print_r($adapter,true));
     }
 }

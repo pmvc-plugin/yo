@@ -5,7 +5,7 @@ ${_INIT_CONFIG}[_CLASS] = 'PMVC\PlugIn\yo\yo';
 
 class yo extends \PMVC\PLUGIN
 {
-    private $route;
+    private $_route;
 
     public function init()
     {
@@ -15,7 +15,7 @@ class yo extends \PMVC\PLUGIN
         }
         $this->setDefaultAlias($controller);
         \PMVC\plug('dispatcher')->attach($this,'MapRequest');
-        $this->route=\PMVC\plug('fast_route');
+        $this->_route=\PMVC\plug('fast_route');
         \PMVC\plug('url')->setEnv(array(
             'REQUEST_URI',
             'SCRIPT_NAME'
@@ -25,14 +25,14 @@ class yo extends \PMVC\PLUGIN
 
     public function getRoutes()
     {
-        return $this->route->getRoutes();
+        return $this->_route->getRoutes();
     }
 
     public function onMapRequest()
     {
         $request = $this->getRequest();
         $uri = \PMVC\plug('url')->getPathInfo();
-        $dispatch = $this->route->getDispatch(
+        $dispatch = $this->_route->getDispatch(
             $this['method'],
             $uri
         );
@@ -56,29 +56,27 @@ class yo extends \PMVC\PLUGIN
 
     public function get($path=null,$function=null)
     {
-        $this->route->addRoute('GET',$path,$function);
-        return $this;
+        $this->_route->addRoute('GET',$path,$function);
+        return $this['this'];
     }
 
     public function post($path,$function)
     {
-        $this->route->addRoute('POST',$path,$function);
-        return $this;
+        $this->_route->addRoute('POST',$path,$function);
+        return $this['this'];
     }
 
     public function put($path,$function)
     {
-        $this->route->addRoute('PUT',$path,$function);
-        return $this;
+        $this->_route->addRoute('PUT',$path,$function);
+        return $this['this'];
     }
 
     public function delete($path,$function)
     {
-        $this->route->addRoute('DELETE',$path,$function);
-        return $this;
+        $this->_route->addRoute('DELETE',$path,$function);
+        return $this['this'];
     }
 
 }
-
-
 
