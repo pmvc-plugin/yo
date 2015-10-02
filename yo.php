@@ -1,9 +1,9 @@
 <?php
 namespace PMVC\PlugIn\yo;
 
-${_INIT_CONFIG}[_CLASS] = 'PMVC\PlugIn\yo\yo';
+${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\yo';
 
-class yo extends \PMVC\PLUGIN
+class yo extends \PMVC\PlugIn
 {
     private $_route;
 
@@ -21,11 +21,6 @@ class yo extends \PMVC\PLUGIN
             'SCRIPT_NAME'
         ));
         $this['method'] = $this->getRequest()->getMethod();
-    }
-
-    public function getRoutes()
-    {
-        return $this->_route->getRoutes();
     }
 
     public function onMapRequest()
@@ -48,33 +43,42 @@ class yo extends \PMVC\PLUGIN
         }
         \PMVC\set($request, $dispatch->var);
         $b = new \PMVC\MappingBuilder();
-        $b->addAction('index', array(
-            _FUNCTION=>$dispatch->action
-        ));
+        $b->addAction('index', $dispatch->action);
         $this->addMapping($b->getMappings());
     }
 
-    public function get($path=null,$function=null)
+    public function getRoutes()
     {
-        $this->_route->addRoute('GET',$path,$function);
+        return $this->_route->getRoutes();
+    }
+
+    public function addRoute($method, $path, $function, $params)
+    {
+        $params[_FUNCTION] = $function;
+        $this->_route->addRoute($method,$path,$params);
+    }
+
+    public function get($path, $function, $params=array())
+    {
+        $this->addRoute('GET', $path, $function, $params);
         return $this['this'];
     }
 
-    public function post($path,$function)
+    public function post($path, $function, $params=array())
     {
-        $this->_route->addRoute('POST',$path,$function);
+        $this->addRoute('POST', $path, $function, $params);
         return $this['this'];
     }
 
-    public function put($path,$function)
+    public function put($path, $function, $params=array())
     {
-        $this->_route->addRoute('PUT',$path,$function);
+        $this->addRoute('PUT', $path, $function, $params);
         return $this['this'];
     }
 
-    public function delete($path,$function)
+    public function delete($path, $function, $params=array())
     {
-        $this->_route->addRoute('DELETE',$path,$function);
+        $this->addRoute('DELETE', $path, $function, $params);
         return $this['this'];
     }
 
