@@ -82,5 +82,11 @@ class yo extends \PMVC\PlugIn
         return $this['this'];
     }
 
+    public function options($path, $function, $params=array())
+    {
+        $this->addRoute('OPTIONS', $path, $function, $params);
+        return $this['this'];
+    }
+
 }
 
