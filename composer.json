@@ -13,6 +13,7 @@
     ],
     "require": {
         "pmvc/pmvc": "*",
+        "pmvc-plugin/controller": "*",
         "pmvc-plugin/dispatcher": "*",
         "pmvc-plugin/fast_route": "*",
         "pmvc-plugin/url": "*"

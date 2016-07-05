@@ -1,12 +1,14 @@
 <?php
-PMVC\Load::mvc();
-PMVC\addPlugInFolder('../');
+PMVC\Load::plug();
+PMVC\addPlugInFolders(['../']);
 class YoTest extends PHPUnit_Framework_TestCase
 {
     function testInit()
     {
         $method = 'GET';
-        putenv("REQUEST_METHOD=$method");
+        \PMVC\plug('controller')
+            ->getRequest()
+            ->setMethod($method);
         $yo = \PMVC\plug('yo');
         $this->assertEquals($method,$yo['method']);
     }

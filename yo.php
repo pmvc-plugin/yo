@@ -9,11 +9,7 @@ class yo extends \PMVC\PlugIn
 
     public function init()
     {
-        $controller = \PMVC\getC(); 
-        if (!$controller) {
-            $controller = new \PMVC\ActionController();
-        }
-        $this->setDefaultAlias($controller);
+        $this->setDefaultAlias(\PMVC\plug('controller'));
         \PMVC\plug('dispatcher')->attach($this,'MapRequest');
         $this->_route=\PMVC\plug('fast_route');
         \PMVC\plug('url')->setEnv(array(
@@ -34,7 +30,7 @@ class yo extends \PMVC\PlugIn
         if(is_int($dispatch)){
             http_response_code($dispatch);
             trigger_error('no match router found');
-            \PMVC\call_plugin(
+            \PMVC\callPlugIn(
                 'dispatcher',
                 'stop',
                 array(true)
@@ -44,7 +40,7 @@ class yo extends \PMVC\PlugIn
         \PMVC\set($request, $dispatch->var);
         $b = new \PMVC\MappingBuilder();
         $b->addAction('index', $dispatch->action);
-        $this->addMapping($b->getMappings());
+        $this->addMapping($b);
     }
 
     public function getRoutes()
