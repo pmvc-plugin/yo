@@ -12,10 +12,6 @@ class yo extends \PMVC\PlugIn
         $this->setDefaultAlias(\PMVC\plug('controller'));
         \PMVC\plug('dispatcher')->attach($this,'MapRequest');
         $this->_route=\PMVC\plug('fast_route');
-        \PMVC\plug('url')->setEnv(array(
-            'REQUEST_URI',
-            'SCRIPT_NAME'
-        ));
         $this['method'] = $this->getRequest()->getMethod();
     }
 
@@ -29,18 +25,21 @@ class yo extends \PMVC\PlugIn
         );
         if(is_int($dispatch)){
             http_response_code($dispatch);
-            trigger_error('no match router found');
-            \PMVC\callPlugIn(
+            \PMVC\callPlugIn (
                 'dispatcher',
                 'stop',
-                array(true)
+                [true]
             );
-            return;
+            return !trigger_error('no match router found');
         }
         \PMVC\set($request, $dispatch->var);
-        $b = new \PMVC\MappingBuilder();
-        $b->addAction('index', $dispatch->action);
-        $this->addMapping($b);
+        if (is_string($dispatch->action)) {
+            $this->setAppAction($dispatch->action);
+        } else {
+            $b = new \PMVC\MappingBuilder();
+            $b->addAction('index', $dispatch->action);
+            $this->addMapping($b);
+        }
     }
 
     public function getRoutes()
@@ -48,41 +47,35 @@ class yo extends \PMVC\PlugIn
         return $this->_route->getRoutes();
     }
 
-    public function addRoute($method, $path, $function, $params)
+    public function addRoute($method, $args)
     {
-        $params[_FUNCTION] = $function;
-        $this->_route->addRoute($method,$path,$params);
-    }
-
-    public function get($path, $function, $params=array())
-    {
-        $this->addRoute('GET', $path, $function, $params);
+        array_unshift($args, $method);
+        call_user_func_array([$this->_route,'addRoute'], $args);
         return $this['this'];
     }
 
-    public function post($path, $function, $params=array())
+    public function get($path, $action)
     {
-        $this->addRoute('POST', $path, $function, $params);
-        return $this['this'];
+        return $this->addRoute('GET', func_get_args());
     }
 
-    public function put($path, $function, $params=array())
+    public function post($path, $action)
     {
-        $this->addRoute('PUT', $path, $function, $params);
-        return $this['this'];
+        return $this->addRoute('POST', func_get_args());
     }
 
-    public function delete($path, $function, $params=array())
+    public function put($path, $action)
     {
-        $this->addRoute('DELETE', $path, $function, $params);
-        return $this['this'];
+        return $this->addRoute('PUT', func_get_args());
     }
 
-    public function options($path, $function, $params=array())
+    public function delete($path, $action)
     {
-        $this->addRoute('OPTIONS', $path, $function, $params);
-        return $this['this'];
+        return $this->addRoute('DELETE', func_get_args());
     }
 
+    public function options($path, $action)
+    {
+        return $this->addRoute('OPTIONS', func_get_args());
+    }
 }
-
