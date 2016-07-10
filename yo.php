@@ -51,7 +51,7 @@ class yo extends \PMVC\PlugIn
     {
         array_unshift($args, $method);
         call_user_func_array([$this->_route,'addRoute'], $args);
-        return $this['this'];
+        return;
     }
 
     public function get($path, $action)

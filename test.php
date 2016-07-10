@@ -22,11 +22,10 @@ class YoTest extends PHPUnit_Framework_TestCase
             'SCRIPT_NAME'=>'/yo/'
         ]);
         $yo['method']='GET';
-        $adapter = $yo->get('/hello/{name}',function($m,$f) use ($yo){
+        $yo->get('/hello/{name}',function($m,$f) use ($yo){
             $yo['test_name']=$f['name'];
         });
         $yo->process();
         $this->assertEquals($test_name,$yo['test_name']);
-        $this->assertContains('Adapter',print_r($adapter,true));
     }
 }
