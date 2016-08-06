@@ -10,9 +10,23 @@ class yo extends \PMVC\PlugIn
     public function init()
     {
         $this->setDefaultAlias(\PMVC\plug('controller'));
-        \PMVC\plug('dispatcher')->attach($this,'MapRequest');
+        $pEvent = \PMVC\plug('dispatcher');
+        $pEvent->attach($this,'MapRequest');
+        $pEvent->attach($this,'SetConfig__run_form_');
         $this->_route=\PMVC\plug('fast_route');
         $this['method'] = $this->getRequest()->getMethod();
+    }
+
+    public function onSetConfig__run_form_($subject)
+    {
+        $subject->detach($this);
+        $method = \PMVC\value(
+            \PMVC\getOption(_RUN_FORM),
+            ['_method']
+        );
+        if (!empty($method)) {
+            $this['method'] = $method;
+        }
     }
 
     public function onMapRequest()
