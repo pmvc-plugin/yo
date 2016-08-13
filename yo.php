@@ -32,7 +32,7 @@ class yo extends \PMVC\PlugIn
     public function onMapRequest()
     {
         $request = $this->getRequest();
-        $uri = \PMVC\plug('url')->getPathInfo();
+        $uri = \PMVC\plug('url')->getPath();
         $dispatch = $this->_route->getDispatch(
             $this['method'],
             $uri
