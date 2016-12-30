@@ -3,6 +3,8 @@ namespace PMVC\PlugIn\yo;
 
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\yo';
 
+const INPUT_FIELD = '--method';
+
 class yo extends \PMVC\PlugIn
 {
     private $_route;
@@ -22,7 +24,7 @@ class yo extends \PMVC\PlugIn
         $subject->detach($this);
         $method = \PMVC\value(
             \PMVC\getOption(_RUN_FORM),
-            ['_method']
+            [INPUT_FIELD]
         );
         if (!empty($method)) {
             $this['method'] = $method;
