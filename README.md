@@ -4,5 +4,8 @@
 [![License](https://poser.pugx.org/pmvc-plugin/yo/license)](https://packagist.org/packages/pmvc-plugin/yo)
 [![Total Downloads](https://poser.pugx.org/pmvc-plugin/yo/downloads)](https://packagist.org/packages/pmvc-plugin/yo) 
 
-# yo
+YO PMVC rest micro framework
 ===============
+
+## What is REST?
+   * https://en.wikipedia.org/wiki/Representational_state_transfer
