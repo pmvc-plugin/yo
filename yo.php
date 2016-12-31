@@ -3,8 +3,6 @@ namespace PMVC\PlugIn\yo;
 
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\yo';
 
-const INPUT_FIELD = '--method';
-
 class yo extends \PMVC\PlugIn
 {
     private $_route;
@@ -14,21 +12,8 @@ class yo extends \PMVC\PlugIn
         $this->setDefaultAlias(\PMVC\plug('controller'));
         $pEvent = \PMVC\plug('dispatcher');
         $pEvent->attach($this,'MapRequest');
-        $pEvent->attach($this,'SetConfig__run_form_');
         $this->_route=\PMVC\plug('fast_route');
         $this['method'] = $this->getRequest()->getMethod();
-    }
-
-    public function onSetConfig__run_form_($subject)
-    {
-        $subject->detach($this);
-        $method = \PMVC\value(
-            \PMVC\getOption(_RUN_FORM),
-            [INPUT_FIELD]
-        );
-        if (!empty($method)) {
-            $this['method'] = $method;
-        }
     }
 
     public function onMapRequest()
