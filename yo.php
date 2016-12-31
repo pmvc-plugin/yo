@@ -1,6 +1,8 @@
 <?php
 namespace PMVC\PlugIn\yo;
 
+use UnexpectedValueException;
+
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\yo';
 
 class yo extends \PMVC\PlugIn
@@ -26,12 +28,7 @@ class yo extends \PMVC\PlugIn
         );
         if(is_int($dispatch)){
             http_response_code($dispatch);
-            \PMVC\callPlugIn (
-                'dispatcher',
-                'stop',
-                [true]
-            );
-            return !trigger_error('no match router found');
+            throw new UnexpectedValueException('No match router path found.');
         }
         \PMVC\set($request, $dispatch->var);
         if (is_string($dispatch->action)) {
