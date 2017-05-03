@@ -27,17 +27,17 @@ class yo extends \PMVC\PlugIn
             $uri
         );
         if(is_int($dispatch)){
-            http_response_code($dispatch);
+            \PMVC\option(
+                'set',
+                'httpResponseCode',
+                $dispatch
+            );
             throw new UnexpectedValueException('No match router path found.');
         }
         \PMVC\set($request, $dispatch->var);
-        if (is_string($dispatch->action)) {
-            $this->setAppAction($dispatch->action);
-        } else {
-            $b = new \PMVC\MappingBuilder();
-            $b->addAction('index', $dispatch->action);
-            $this->addMapping($b);
-        }
+        $b = new \PMVC\MappingBuilder();
+        $b->addAction('index', $dispatch->action);
+        $this->addMapping($b);
     }
 
     public function getRoutes()
