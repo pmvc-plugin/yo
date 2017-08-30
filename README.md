@@ -10,6 +10,9 @@ YO PMVC rest micro framework
 ## How to overwrite method?
    * http://xxx/?--REQUEST_METHOD=xxx
    * https://github.com/pmvc-plugin/http/blob/master/http.php#L42-L51
+   * Defined
+      * https://github.com/pmvc-plugin/http/blob/master/http.php#L50-L59
+      * https://github.com/pmvc-plugin/getenv/blob/master/getenv.php#L55-L59
 
 
 ## What is REST?
