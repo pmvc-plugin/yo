@@ -32,7 +32,11 @@ class yo extends \PMVC\PlugIn
                 'httpResponseCode',
                 $dispatch
             );
-            throw new UnexpectedValueException('No match router path found.');
+            throw new UnexpectedValueException(json_encode([
+                'error'  => 'No match router path found.',
+                'method' => $this['method'],
+                'uri'    => $uri
+            ]));
         }
         \PMVC\set($request, $dispatch->var);
         $b = new \PMVC\MappingBuilder();
